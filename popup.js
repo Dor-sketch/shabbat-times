@@ -2,12 +2,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const updateButton = document.getElementById('updateButton');
     updateButton.addEventListener('click', updateTimes);
 
-    // Update times when the popup opens
-    updateTimes();
+    // Load saved city and update times when the popup opens
+    chrome.storage.local.get('city', function(data) {
+        if (chrome.runtime.lastError) {
+            console.error("Error retrieving city:", chrome.runtime.lastError);
+        } else if (data.city) {
+            document.getElementById('city').value = data.city;
+        }
+        updateTimes();
+    });
+
+    // Update all static text
+    updateStaticText();
 });
 
+function updateStaticText() {
+    document.getElementById('headerText').textContent = chrome.i18n.getMessage('shabbatTimes');
+    document.getElementById('city').placeholder = chrome.i18n.getMessage('cityPlaceholder');
+    document.getElementById('updateButton').textContent = chrome.i18n.getMessage('updateButton');
+    document.getElementById('entrance-label').textContent = chrome.i18n.getMessage('shabbatEntrance') + ':';
+    document.getElementById('exit-label').textContent = chrome.i18n.getMessage('shabbatExit') + ':';
+}
+
 async function getShabbatTimes(city) {
-    const apiUrl = `https://www.hebcal.com/shabbat?cfg=json&city=${encodeURIComponent(city)}&lg=he`;
+    const lang = chrome.i18n.getUILanguage().split('-')[0];
+    const apiUrl = `https://www.hebcal.com/shabbat?cfg=json&city=${encodeURIComponent(city)}&lg=${lang}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -20,9 +39,16 @@ async function getShabbatTimes(city) {
         const items = data.items;
         const entranceItem = items.find(item => item.category === "candles");
         const exitItem = items.find(item => item.category === "havdalah");
+
+        // Helper function to extract time from title
+        const extractTime = (title) => {
+            const parts = title.split(': ');
+            return parts.length > 1 ? parts[parts.length - 1] : title;
+        };
+
         return {
-            entrance: entranceItem ? entranceItem.title.split(": ")[1] : "לא נמצא",
-            exit: exitItem ? exitItem.title.split(": ")[1] : "לא נמצא"
+            entrance: entranceItem ? extractTime(entranceItem.title) : chrome.i18n.getMessage('notFound'),
+            exit: exitItem ? extractTime(exitItem.title) : chrome.i18n.getMessage('notFound')
         };
     } catch (error) {
         console.error("Error fetching Shabbat times:", error);
@@ -38,19 +64,32 @@ async function updateTimes() {
 
     try {
         errorMessageElement.textContent = '';
-        entranceTimeElement.textContent = 'טוען...';
-        exitTimeElement.textContent = 'טוען...';
+        entranceTimeElement.textContent = chrome.i18n.getMessage('loading');
+        exitTimeElement.textContent = chrome.i18n.getMessage('loading');
 
         const times = await getShabbatTimes(city);
+
+        // Update the display with localized labels
+        document.getElementById('entrance-label').textContent = chrome.i18n.getMessage('shabbatEntrance') + ':';
+        document.getElementById('exit-label').textContent = chrome.i18n.getMessage('shabbatExit') + ':';
+
         entranceTimeElement.textContent = times.entrance;
         exitTimeElement.textContent = times.exit;
+
+        // Save the city for next time
+        chrome.storage.local.set({ city: city }, () => {
+            if (chrome.runtime.lastError) {
+                console.error("Error saving city:", chrome.runtime.lastError);
+            }
+        });
 
         // Update the header with the next Friday's date
         updateHeader();
     } catch (error) {
-        entranceTimeElement.textContent = 'שגיאה';
-        exitTimeElement.textContent = 'שגיאה';
-        errorMessageElement.textContent = `שגיאה בטעינת הנתונים: ${error.message}`;
+        entranceTimeElement.textContent = chrome.i18n.getMessage('error');
+        exitTimeElement.textContent = chrome.i18n.getMessage('error');
+        errorMessageElement.textContent = `${chrome.i18n.getMessage('errorLoading')}: ${error.message}`;
+        console.error("Error updating times:", error);
     }
 }
 
@@ -66,6 +105,6 @@ function updateHeader() {
     const d = new Date();
     const nextFriday = getNextFriday(d);
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formatter = new Intl.DateTimeFormat('he-IL', options);
-    document.querySelector('h1').textContent = `זמני שבת ליום ${formatter.format(nextFriday)}`;
+    const formatter = new Intl.DateTimeFormat(chrome.i18n.getUILanguage(), options);
+    document.getElementById('headerText').textContent = `${chrome.i18n.getMessage('shabbatTimesFor')} ${formatter.format(nextFriday)}`;
 }

@@ -1,0 +1,54 @@
+{
+  "extensionName": {
+    "message": "Shabbat Times",
+    "description": "The name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Display Shabbat times for a specified location",
+    "description": "The description of the extension"
+  },
+  "popupTitle": {
+    "message": "Shabbat Times",
+    "description": "The title of the popup"
+  },
+  "shabbatTimes": {
+    "message": "Shabbat Times",
+    "description": "The header text for Shabbat times"
+  },
+  "shabbatTimesFor": {
+    "message": "Shabbat Times for",
+    "description": "The header text for Shabbat times with date"
+  },
+  "cityPlaceholder": {
+    "message": "City",
+    "description": "Placeholder text for the city input"
+  },
+  "updateButton": {
+    "message": "Update Times",
+    "description": "Text for the update button"
+  },
+  "shabbatEntrance": {
+    "message": "Shabbat Entrance",
+    "description": "Label for Shabbat entrance time"
+  },
+  "shabbatExit": {
+    "message": "Shabbat Exit",
+    "description": "Label for Shabbat exit time"
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Text shown while loading times"
+  },
+  "error": {
+    "message": "Error",
+    "description": "Text shown when an error occurs"
+  },
+  "errorLoading": {
+    "message": "Error loading data",
+    "description": "Error message when loading fails"
+  },
+  "notFound": {
+    "message": "Not found",
+    "description": "Text shown when a time is not found"
+  }
+}
