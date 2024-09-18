@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>זמני שבת</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>זמני שבת</h1>
+        <div class="location-input">
+            <input type="text" id="city" placeholder="עיר" value="Tel Aviv">
+            <button id="updateButton">עדכן זמנים</button>
+        </div>
+        <div class="time-display">
+            <span class="label">כניסת השבת:</span>
+            <span class="time" id="entrance-time"></span>
+        </div>
+        <div class="time-display">
+            <span class="label">יציאת השבת:</span>
+            <span class="time" id="exit-time"></span>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
