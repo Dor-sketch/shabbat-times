@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>זמני שבת</title>
+    <link rel="icon" href="https://emojicdn.elk.sh/🕯️" type="image/x-icon">
+    <meta name="description" content="קבל את זמני כניסת ויציאת שבת לכל עיר בישראל">
+    <meta name="keywords" content="שבת, זמני שבת, כניסת שבת, יציאת שבת, זמני שבת לכל עיר, זמני שבת בישראל">
+    <meta name="author" content="Dor Pascal">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="זמני שבת">
+    <meta property="og:description" content="קבל את זמני כניסת ויציאת שבת לכל עיר בישראל">
+    <meta property="og:image" content="https://emojicdn.elk.sh/🕯️">
+    <meta property="og:url" content="https://dorpascal.com/shabbat-times/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="he_IL">
+    <meta property="og:site_name" content="זמני שבת">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="apple-itunes-app" content="app-id=6736739283">
+    <link rel="canonical" href="https://dorpascal.com/shabbat-times/">
+    <meta name="theme-color" content="#1e3c72">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: rtl;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .location-input {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border-radius: 0 0 10px 10px;
+            width: 100%;
+            z-index: 99;
+            top: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: rgba(30, 60, 114, 0.1);
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            background: #ffd700;
+            color: #1e3c72;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #ffed4a;
+            transform: translateY(-2px);
+        }
+
+        .time-display {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-display i {
+            margin-left: 0.5rem;
+            color: #ffd700;
+        }
+
+        .label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .time {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="headerText">זמני שבת</h1>
+        <div class="location-input">
+            <div class="search-container">
+                <input type="text" id="city" placeholder="הכנס עיר" autocomplete="off">
+                <div id="autocomplete-list" class="autocomplete-items"></div>
+            </div>
+            <button id="updateButton">עדכן זמנים</button>
+        </div>
+        <div class="time-display">
+            <div>
+                <i class="fas fa-sun"></i>
+                <span class="label" id="entrance-label">כניסת שבת:</span>
+            </div>
+            <span class="time" id="entrance-time"></span>
+        </div>
+        <div class="time-display">
+            <div>
+                <i class="fas fa-moon"></i>
+                <span class="label" id="exit-label">יציאת שבת:</span>
+            </div>
+            <span class="time" id="exit-time"></span>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0, 0, 0, 0.5); padding: 0.5rem; text-align: center;">
+        <a href="https://dorpascal.com/" style="color: #ffffff; text-decoration: none;">Dor Pascal</a>
+    </footer>
+
+    <script>
+        // Common Israeli cities with their geoname IDs
+        const commonCities = [
+            { name: 'Tel Aviv', id: 293397, hebrew: 'תל אביב' },
+            { name: 'Jerusalem', id: 281184, hebrew: 'ירושלים' },
+            { name: 'Haifa', id: 294801, hebrew: 'חיפה' },
+            { name: 'Rishon LeZion', id: 293703, hebrew: 'ראשון לציון' },
+            { name: 'Petah Tikva', id: 293918, hebrew: 'פתח תקווה' },
+            { name: 'Ashdod', id: 295629, hebrew: 'אשדוד' },
+            { name: 'Netanya', id: 294071, hebrew: 'נתניה' },
+            { name: 'Beer Sheva', id: 295530, hebrew: 'באר שבע' },
+            { name: 'Holon', id: 294778, hebrew: 'חולון' },
+            { name: 'Bnei Brak', id: 295548, hebrew: 'בני ברק' },
+            { name: 'Bat Yam', id: 295548, hebrew: 'בת ים' },
+            { name: 'Ramat Gan', id: 293807, hebrew: 'רמת גן' },
+            { name: 'Ashkelon', id: 295620, hebrew: 'אשקלון' },
+            { name: 'Rehovot', id: 293783, hebrew: 'רחובות' },
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const cityInput = document.getElementById('city');
+            const updateButton = document.getElementById('updateButton');
+            const autocompleteList = document.getElementById('autocomplete-list');
+
+            cityInput.addEventListener('input', handleInput);
+            updateButton.addEventListener('click', updateTimes);
+
+            // Initialize with geolocation or default city
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        fetchCityName(latitude, longitude);
+                    },
+                    () => {
+                        cityInput.value = "Tel Aviv";
+                        updateTimes();
+                    }
+                );
+            } else {
+                cityInput.value = "Tel Aviv";
+                updateTimes();
+            }
+
+            // Close autocomplete list when clicking outside
+            document.addEventListener('click', function(e) {
+                if (e.target !== cityInput) {
+                    autocompleteList.innerHTML = '';
+                }
+            });
+        });
+
+        function handleInput(e) {
+            const input = e.target.value.toLowerCase();
+            const autocompleteList = document.getElementById('autocomplete-list');
+            autocompleteList.innerHTML = '';
+
+            if (!input) return;
+
+            const matchingCities = commonCities.filter(city =>
+                city.name.toLowerCase().includes(input) ||
+                city.hebrew.includes(input)
+            );
+
+            matchingCities.forEach(city => {
+                const div = document.createElement('div');
+                div.innerHTML = `${city.hebrew} (${city.name})`;
+                div.addEventListener('click', () => {
+                    document.getElementById('city').value = city.name;
+                    autocompleteList.innerHTML = '';
+                    updateTimes();
+                });
+                autocompleteList.appendChild(div);
+            });
+        }
+
+        async function fetchCityName(latitude, longitude) {
+            try {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&accept-language=en`
+                );
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+
+                // Try to match with our common cities list
+                const cityName = data.address.city || data.address.town || data.address.village;
+                const matchedCity = commonCities.find(city =>
+                    city.name.toLowerCase().includes(cityName.toLowerCase()) ||
+                    cityName.toLowerCase().includes(city.name.toLowerCase())
+                );
+
+                document.getElementById('city').value = matchedCity ? matchedCity.name : 'Tel Aviv';
+                updateTimes();
+            } catch (error) {
+                console.error("Error fetching city name:", error);
+                document.getElementById('city').value = "Tel Aviv";
+                updateTimes();
+            }
+        }
+
+        async function getShabbatTimes(cityName) {
+            try {
+                // Find the city in our common cities list
+                const city = commonCities.find(c =>
+                    c.name.toLowerCase() === cityName.toLowerCase() ||
+                    c.hebrew === cityName
+                );
+
+                if (!city) {
+                    throw new Error('עיר לא נמצאה. אנא בחר עיר מהרשימה');
+                }
+
+                const apiUrl = `https://www.hebcal.com/shabbat?cfg=json&geonameid=${city.id}&lg=he`;
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`שגיאת HTTP! סטטוס: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (!data.items || !Array.isArray(data.items)) {
+                    throw new Error('תבנית תגובה לא חוקית');
+                }
+
+                const items = data.items;
+                const entranceItem = items.find(item => item.category === "candles");
+                const exitItem = items.find(item => item.category === "havdalah");
+
+                const extractTime = (title) => {
+                    const parts = title.split(': ');
+                    return parts.length > 1 ? parts[parts.length - 1] : title;
+                };
+
+                return {
+                    entrance: entranceItem ? extractTime(entranceItem.title) : 'לא נמצא',
+                    exit: exitItem ? extractTime(exitItem.title) : 'לא נמצא'
+                };
+            } catch (error) {
+                console.error("Error fetching Shabbat times:", error);
+                throw error;
+            }
+        }
+
+        async function updateTimes() {
+            const cityInput = document.getElementById('city');
+            const entranceTimeElement = document.getElementById('entrance-time');
+            const exitTimeElement = document.getElementById('exit-time');
+            const errorMessageElement = document.getElementById('error-message');
+            const cityName = cityInput.value || "Tel Aviv";
+
+            try {
+                errorMessageElement.textContent = '';
+                entranceTimeElement.innerHTML = '<div class="loading"></div>';
+                exitTimeElement.innerHTML = '<div class="loading"></div>';
+
+                const times = await getShabbatTimes(cityName);
+                entranceTimeElement.textContent = times.entrance;
+                exitTimeElement.textContent = times.exit;
+
+                updateHeader();
+            } catch (error) {
+                entranceTimeElement.textContent = 'שגיאה';
+                exitTimeElement.textContent = 'שגיאה';
+                errorMessageElement.textContent = error.message;
+            }
+        }
+
+        function getNextFriday(date) {
+            const dayOfWeek = date.getDay();
+            const daysUntilFriday = (5 - dayOfWeek + 7) % 7;
+            const nextFriday = new Date(date);
+            nextFriday.setDate(date.getDate() + daysUntilFriday);
+            return nextFriday;
+        }
+
+        function updateHeader() {
+            const d = new Date();
+            const nextFriday = getNextFriday(d);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formatter = new Intl.DateTimeFormat('he-IL', options);
+            document.getElementById('headerText').textContent = `זמני שבת - ${formatter.format(nextFriday)}`;
+        }
+    </script>
+</body>
+</html>
