@@ -3,9 +3,9 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fdorpascal.com%2Fshabbat-times%2F&up_message=online&up_color=green&down_message=offline&down_color=lightgrey&label=demo&logo=github)](https://dorpascal.com/shabbat-times/)
 [![GitHub license](https://img.shields.io/github/license/Dor-sketch/shabbat-times?color=blue)](https://github.com/Dor-sketch/shabbat-times/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Dor-sketch/shabbat-times?style=social)](https://github.com/Dor-sketch/shabbat-times/stargazers)
-[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/jkadmhnjhehekcgcajgnjjiehiefndcd?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/jkadmhnjhehekcgcajgnjjiehiefndcd)
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jkadmhnjhehekcgcajgnjjiehiefndcd?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/jkadmhnjhehekcgcajgnjjiehiefndcd)
-[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/jkadmhnjhehekcgcajgnjjiehiefndcd?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/jkadmhnjhehekcgcajgnjjiehiefndcd)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/kdphjcfdmaojnfhakmepblkdjebppbbo?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/kdphjcfdmaojnfhakmepblkdjebppbbo)
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/kdphjcfdmaojnfhakmepblkdjebppbbo?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/kdphjcfdmaojnfhakmepblkdjebppbbo)
+[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/kdphjcfdmaojnfhakmepblkdjebppbbo?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/תנ״ך-מקוון/kdphjcfdmaojnfhakmepblkdjebppbbo)
 
 A modern, responsive web application for checking Shabbat times in Israeli cities. Available as both a web app and a Chrome extension.
 
@@ -37,7 +37,7 @@ cd shabbat-times
 
 ### Chrome Extension
 
-1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/תנ״ך-מקוון/jkadmhnjhehekcgcajgnjjiehiefndcd)
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/shabbat-times/kdphjcfdmaojnfhakmepblkdjebppbbo?authuser=0&hl=en-GB)
 2. Click "Add to Chrome"
 3. Enjoy easy access to Shabbat times!
 
